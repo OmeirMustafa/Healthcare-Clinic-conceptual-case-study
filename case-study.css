@@ -1,0 +1,250 @@
+/* Case Study Design System - Editorial/Agency Style */
+:root {
+    /* Colors - Minimalist & High Contrast */
+    --cs-bg: #FFFFFF;
+    --cs-surface: #F4F4F5;
+    --cs-text: #111111;
+    --cs-text-muted: #666666;
+    --cs-accent: #1F3B4D;
+    /* Borrowed from Clinic brand for subtle links */
+    --cs-border: #E5E5E5;
+
+    /* Typography */
+    --cs-font-serif: 'Crimson Pro', Georgia, serif;
+    --cs-font-sans: 'Inter', -apple-system, sans-serif;
+
+    /* Spacing */
+    --space-xs: 8px;
+    --space-sm: 16px;
+    --space-md: 32px;
+    --space-lg: 64px;
+    --space-xl: 96px;
+    --space-2xl: 128px;
+
+    /* Layout */
+    --reading-width: 68ch;
+    --container-width: 1200px;
+}
+
+/* Reset */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: var(--cs-bg);
+    color: var(--cs-text);
+    font-family: var(--cs-font-sans);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Typography Utility */
+h1,
+h2,
+h3,
+h4 {
+    font-family: var(--cs-font-serif);
+    font-weight: 400;
+    line-height: 1.2;
+}
+
+.cs-display-1 {
+    font-size: clamp(3rem, 5vw, 4.5rem);
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: var(--space-md);
+}
+
+.cs-display-2 {
+    font-size: clamp(2rem, 4vw, 3rem);
+    letter-spacing: -0.01em;
+    margin-bottom: var(--space-md);
+}
+
+.cs-heading-3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: var(--space-sm);
+    font-family: var(--cs-font-sans);
+    letter-spacing: -0.02em;
+}
+
+.cs-body {
+    font-size: 1.125rem;
+    color: var(--cs-text-muted);
+    margin-bottom: var(--space-md);
+    max-width: var(--reading-width);
+}
+
+.cs-body-lg {
+    font-size: 1.25rem;
+    color: var(--cs-text);
+    line-height: 1.6;
+}
+
+.cs-label {
+    display: block;
+    font-family: var(--cs-font-sans);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--cs-text-muted);
+    margin-bottom: var(--space-sm);
+    font-weight: 600;
+}
+
+/* Layout Utility */
+.cs-container {
+    max-width: var(--container-width);
+    margin: 0 auto;
+    padding: 0 var(--space-md);
+}
+
+.cs-section {
+    padding: var(--space-xl) 0;
+    border-bottom: 1px solid var(--cs-border);
+}
+
+.cs-section:last-child {
+    border-bottom: none;
+}
+
+.cs-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-lg);
+}
+
+.cs-grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-md);
+}
+
+/* Specific Components */
+.cs-header-badge {
+    display: inline-block;
+    background: #000;
+    color: #FFF;
+    padding: 8px 16px;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    margin-bottom: var(--space-md);
+    letter-spacing: 0.05em;
+}
+
+.cs-intro-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: var(--space-xl);
+    align-items: start;
+}
+
+.cs-meta-item {
+    margin-bottom: var(--space-md);
+}
+
+.cs-meta-label {
+    font-size: 0.75rem;
+    color: var(--cs-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 4px;
+}
+
+.cs-meta-value {
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.cs-insight-card {
+    background: var(--cs-surface);
+    padding: var(--space-md);
+    border-left: 2px solid var(--cs-text);
+}
+
+.cs-list {
+    list-style: none;
+    counter-reset: cs-counter;
+}
+
+.cs-list-item {
+    position: relative;
+    padding-left: var(--space-lg);
+    margin-bottom: var(--space-md);
+}
+
+.cs-list-item::before {
+    counter-increment: cs-counter;
+    content: "0" counter(cs-counter);
+    position: absolute;
+    left: 0;
+    top: 0;
+    font-family: var(--cs-font-serif);
+    font-size: 1.25rem;
+    color: var(--cs-text-muted);
+    opacity: 0.5;
+}
+
+/* Demo Preview Component */
+.cs-demo-showcase {
+    background: var(--cs-surface);
+    padding: var(--space-xl);
+    text-align: center;
+    border-radius: 4px;
+}
+
+.cs-demo-frame {
+    background: #FFF;
+    border-radius: 8px;
+    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    margin-bottom: var(--space-md);
+    border: 1px solid var(--cs-border);
+}
+
+.cs-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--cs-text);
+    color: #FFF;
+    padding: 16px 32px;
+    text-decoration: none;
+    font-weight: 600;
+    border-radius: 4px;
+    transition: transform 0.2s;
+}
+
+.cs-btn:hover {
+    transform: translateY(-2px);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+
+    .cs-grid-2,
+    .cs-grid-3,
+    .cs-intro-grid {
+        grid-template-columns: 1fr;
+        gap: var(--space-md);
+    }
+
+    .cs-display-1 {
+        font-size: 2.5rem;
+    }
+
+    .cs-section {
+        padding: var(--space-lg) 0;
+    }
+}
