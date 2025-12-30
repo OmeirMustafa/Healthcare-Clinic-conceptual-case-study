@@ -484,6 +484,13 @@
     </footer>
   </div>
   <script type="module" src="/main.js"></script>
+  <script>
+    // Hide Case Study Label if inside iframe or if ?embed=true is present
+    if (window.self !== window.top || new URLSearchParams(window.location.search).has('embed')) {
+      const label = document.querySelector('.case-study-label');
+      if (label) label.style.display = 'none';
+    }
+  </script>
 </body>
 
 </html>
