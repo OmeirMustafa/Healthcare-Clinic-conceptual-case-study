@@ -1,4 +1,5 @@
-import './style.css'
+// Style loaded via link tag in HTML for better FCP
+// import './style.css'
 
 // ========================================
 // State Management
