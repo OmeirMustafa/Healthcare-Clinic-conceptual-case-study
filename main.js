@@ -55,23 +55,21 @@ function renderBookingWidget() {
   // Step 1: Select Service
   if (bookingState.step === 1) {
     content.innerHTML = `
-      <div class="booking-step-title">
+      <div class="booking-step-title fade-in-up">
         <span class="step-number">1</span>
         Select Service
       </div>
+      <div class="service-list fade-in-up delay-1" role="radiogroup" aria-label="Select a service">
+        <!-- Injected via loop -->
+      </div>
     `;
 
-    const list = document.createElement('div');
-    list.className = 'service-list';
-    list.setAttribute('role', 'radiogroup');
-    list.setAttribute('aria-label', 'Select a service');
-
+    const list = content.querySelector('.service-list');
     services.forEach((service, index) => {
       const btn = document.createElement('button');
       btn.className = `service-select-btn ${bookingState.data.service?.id === service.id ? 'active' : ''}`;
       btn.setAttribute('role', 'radio');
       btn.setAttribute('aria-checked', bookingState.data.service?.id === service.id);
-      btn.setAttribute('tabindex', index === 0 ? '0' : '-1');
       btn.innerHTML = `
         <div class="service-info">
           <strong>${service.name}</strong>
@@ -80,35 +78,38 @@ function renderBookingWidget() {
         <div class="service-price">${service.price}</div>
       `;
       btn.onclick = () => {
-        bookingState.data.service = service;
-        bookingState.step = 2;
-        renderBookingWidget();
-      };
-      btn.onkeydown = (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          btn.click();
-        }
+        // Simulate loading for premium feel
+        container.classList.add('loading');
+        setTimeout(() => {
+          bookingState.data.service = service;
+          bookingState.step = 2;
+          renderBookingWidget();
+          container.classList.remove('loading');
+        }, 600);
       };
       list.appendChild(btn);
     });
-    content.appendChild(list);
   }
 
   // Step 2: Select Time
   else if (bookingState.step === 2) {
     content.innerHTML = `
-      <button class="back-btn" aria-label="Go back to service selection">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
-        Back
-      </button>
-      <div class="booking-step-title">
-        <span class="step-number">2</span>
-        Choose Time
+      <div class="fade-in-up">
+        <button class="back-btn" aria-label="Go back to service selection">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+            Back
+        </button>
+        <div class="booking-step-title">
+            <span class="step-number">2</span>
+            Choose Availability
+        </div>
+        <p style="color: var(--color-text-muted); margin-bottom: var(--spacing-lg); font-size: 0.9375rem;">
+            Available slots for <strong>Today</strong>
+        </p>
+        <div class="time-grid" role="radiogroup" aria-label="Select a time slot">
+            <!-- Injected via loop -->
+        </div>
       </div>
-      <p style="color: var(--color-text-muted); margin-bottom: var(--spacing-lg); font-size: 0.9375rem;">
-        Available slots for <strong>Today</strong>
-      </p>
     `;
 
     content.querySelector('.back-btn').onclick = () => {
@@ -116,61 +117,55 @@ function renderBookingWidget() {
       renderBookingWidget();
     };
 
-    const grid = document.createElement('div');
-    grid.className = 'time-grid';
-    grid.setAttribute('role', 'radiogroup');
-    grid.setAttribute('aria-label', 'Select a time slot');
-
+    const grid = content.querySelector('.time-grid');
     timeSlots.forEach((time, index) => {
       const btn = document.createElement('button');
       btn.className = 'time-btn';
       btn.textContent = time;
-      btn.setAttribute('role', 'radio');
-      btn.setAttribute('aria-checked', 'false');
-      btn.setAttribute('tabindex', index === 0 ? '0' : '-1');
       btn.onclick = () => {
-        bookingState.data.time = time;
-        bookingState.step = 3;
-        renderBookingWidget();
-      };
-      btn.onkeydown = (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          btn.click();
-        }
+        container.classList.add('loading');
+        setTimeout(() => {
+          bookingState.data.time = time;
+          bookingState.step = 3;
+          renderBookingWidget();
+          container.classList.remove('loading');
+        }, 500);
       };
       grid.appendChild(btn);
     });
-    content.appendChild(grid);
   }
 
   // Step 3: Confirm Details
   else if (bookingState.step === 3) {
     content.innerHTML = `
-      <button class="back-btn" aria-label="Go back to time selection">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
-        Back
-      </button>
-      <div class="booking-step-title">
-        <span class="step-number">3</span>
-        Confirm Details
-      </div>
-      <div class="booking-summary">
-        <p><strong>Service:</strong> ${bookingState.data.service.name}</p>
-        <p><strong>Time:</strong> Today at ${bookingState.data.time}</p>
-        <p><strong>Duration:</strong> ${bookingState.data.service.duration}</p>
-      </div>
-      <form id="booking-form" novalidate>
-        <div class="booking-form-group">
-          <label for="booking-name">Full Name *</label>
-          <input type="text" id="booking-name" name="name" required autocomplete="name" aria-required="true">
+      <div class="fade-in-up">
+        <button class="back-btn" aria-label="Go back to time selection">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+            Back
+        </button>
+        <div class="booking-step-title">
+            <span class="step-number">3</span>
+            Confirm Details
         </div>
-        <div class="booking-form-group">
-          <label for="booking-email">Email Address *</label>
-          <input type="email" id="booking-email" name="email" required autocomplete="email" aria-required="true">
+        <div class="booking-summary">
+            <p><strong>Service:</strong> ${bookingState.data.service.name}</p>
+            <p><strong>Time:</strong> Today at ${bookingState.data.time}</p>
+            <p><strong>Duration:</strong> ${bookingState.data.service.duration}</p>
         </div>
-        <button type="submit" class="btn btn-primary" style="width: 100%;">Request Appointment</button>
-      </form>
+        <form id="booking-form" novalidate>
+            <div class="booking-form-group">
+            <label for="booking-name">Full Name *</label>
+            <input type="text" id="booking-name" name="name" required autocomplete="name" aria-required="true">
+            </div>
+            <div class="booking-form-group">
+            <label for="booking-email">Email Address *</label>
+            <input type="email" id="booking-email" name="email" required autocomplete="email" aria-required="true">
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 100%;">
+                Request Appointment
+            </button>
+        </form>
+      </div>
     `;
 
     content.querySelector('.back-btn').onclick = () => {
@@ -184,14 +179,16 @@ function renderBookingWidget() {
       const name = form.querySelector('#booking-name').value.trim();
       const email = form.querySelector('#booking-email').value.trim();
 
-      if (!name || !email) {
-        return;
-      }
+      if (!name || !email) return;
 
-      bookingState.data.name = name;
-      bookingState.data.email = email;
-      bookingState.step = 4;
-      renderBookingWidget();
+      container.classList.add('loading');
+      setTimeout(() => {
+        bookingState.data.name = name;
+        bookingState.data.email = email;
+        bookingState.step = 4;
+        renderBookingWidget();
+        container.classList.remove('loading');
+      }, 1500); // Longer delay for "processing" feel
     };
   }
 
